@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta Flight Tracker</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Delta Flight Tracker</h1>
+            <p class="subtitle">Track prices &middot; Get notified &middot; Pocket the savings</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Dashboard Stats -->
+        <section class="stats-grid" id="stats">
+            <div class="stat-card">
+                <span class="stat-value" id="stat-active">0</span>
+                <span class="stat-label">Active Flights</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="stat-total">0</span>
+                <span class="stat-label">Total Tracked</span>
+            </div>
+            <div class="stat-card savings">
+                <span class="stat-value" id="stat-savings">$0</span>
+                <span class="stat-label">Total Savings</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="stat-notifications">0</span>
+                <span class="stat-label">Price Drops</span>
+            </div>
+        </section>
+
+        <!-- Add Flight Form -->
+        <section class="card" id="add-flight-section">
+            <h2>Track a Flight</h2>
+            <form id="add-flight-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="origin">Origin</label>
+                        <input type="text" id="origin" placeholder="JFK" maxlength="3" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" id="destination" placeholder="LAX" maxlength="3" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="departure_date">Departure Date</label>
+                        <input type="date" id="departure_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="return_date">Return Date</label>
+                        <input type="date" id="return_date">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="original_price">Price Paid ($)</label>
+                        <input type="number" id="original_price" placeholder="299.00" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmation_number">Confirmation #</label>
+                        <input type="text" id="confirmation_number" placeholder="ABC123">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cabin_class">Cabin</label>
+                        <select id="cabin_class">
+                            <option value="economy">Economy</option>
+                            <option value="comfort+">Comfort+</option>
+                            <option value="first">First Class</option>
+                            <option value="delta_one">Delta One</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="passengers">Passengers</label>
+                        <input type="number" id="passengers" value="1" min="1" max="9">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Start Tracking</button>
+            </form>
+        </section>
+
+        <!-- Tracked Flights -->
+        <section class="card" id="flights-section">
+            <h2>Tracked Flights</h2>
+            <div id="flights-list" class="flights-list">
+                <p class="empty-state">No flights tracked yet. Add one above!</p>
+            </div>
+        </section>
+
+        <!-- Price Update Modal -->
+        <div class="modal-overlay" id="price-modal" style="display: none;">
+            <div class="modal">
+                <h3>Update Price</h3>
+                <p id="modal-flight-info"></p>
+                <form id="price-update-form">
+                    <input type="hidden" id="update-flight-id">
+                    <div class="form-group">
+                        <label for="new-price">New Price ($)</label>
+                        <input type="number" id="new-price" step="0.01" min="0" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Price</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <section class="card" id="notifications-section">
+            <h2>Recent Price Drops</h2>
+            <div id="notifications-list" class="notifications-list">
+                <p class="empty-state">No price drops detected yet.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Delta Flight Tracker &middot; Prices are manually entered for now &middot; Email alerts sent to claudiaa6499@gmail.com</p>
+    </footer>
+
+    <script src="/app.js"></script>
+</body>
+</html>
