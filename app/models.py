@@ -36,6 +36,7 @@ class Flight(Base):
     return_date = Column(String, nullable=True)
     confirmation_number = Column(String, nullable=True)
     original_price = Column(Float, nullable=False)
+    booked_price = Column(Float, nullable=False)
     current_price = Column(Float, nullable=False)
     lowest_price = Column(Float, nullable=False)
     total_savings = Column(Float, default=0.0)

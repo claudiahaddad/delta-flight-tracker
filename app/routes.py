@@ -46,6 +46,7 @@ def create_flight(flight: FlightCreate, db: Session = Depends(get_db)):
         return_date=flight.return_date,
         confirmation_number=flight.confirmation_number,
         original_price=flight.original_price,
+        booked_price=flight.original_price,
         current_price=flight.original_price,
         lowest_price=flight.original_price,
         cabin_class=flight.cabin_class,
@@ -94,7 +95,6 @@ def update_price(flight_id: int, price_update: PriceUpdate, db: Session = Depend
     if not flight:
         raise HTTPException(status_code=404, detail="Flight not found")
 
-    old_price = flight.current_price
     new_price = price_update.price
 
     price_record = PriceRecord(
@@ -107,16 +107,18 @@ def update_price(flight_id: int, price_update: PriceUpdate, db: Session = Depend
     flight.current_price = new_price
     flight.updated_at = datetime.utcnow()
 
-    if new_price < old_price:
-        savings = old_price - new_price
-        flight.total_savings += savings
+    if new_price < flight.lowest_price:
+        flight.lowest_price = new_price
 
-        if new_price < flight.lowest_price:
-            flight.lowest_price = new_price
+    if new_price < flight.booked_price:
+        old_booked = flight.booked_price
+        savings = old_booked - new_price
+        flight.total_savings += savings
+        flight.booked_price = new_price
 
         notification = Notification(
             flight_id=flight_id,
-            old_price=old_price,
+            old_price=old_booked,
             new_price=new_price,
             savings=savings,
         )
@@ -125,7 +127,7 @@ def update_price(flight_id: int, price_update: PriceUpdate, db: Session = Depend
             origin=flight.origin,
             destination=flight.destination,
             departure_date=flight.departure_date,
-            old_price=old_price,
+            old_price=old_booked,
             new_price=new_price,
             savings=savings,
             total_savings=flight.total_savings,
@@ -138,7 +140,7 @@ def update_price(flight_id: int, price_update: PriceUpdate, db: Session = Depend
             "Price drop for %s→%s: $%.2f → $%.2f (save $%.2f)",
             flight.origin,
             flight.destination,
-            old_price,
+            old_booked,
             new_price,
             savings,
         )

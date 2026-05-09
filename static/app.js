@@ -37,7 +37,7 @@ async function loadFlights() {
         }
 
         container.innerHTML = flights.map(f => {
-            const priceDiff = f.current_price - f.original_price;
+            const priceDiff = f.current_price - f.booked_price;
             const priceClass = priceDiff < 0 ? 'price-drop' : priceDiff > 0 ? 'price-up' : '';
             const priceSign = priceDiff < 0 ? '' : priceDiff > 0 ? '+' : '';
 
@@ -53,8 +53,8 @@ async function loadFlights() {
                             <div class="flight-detail-value">${formatDate(f.departure_date)}</div>
                         </div>
                         <div>
-                            <div class="flight-detail-label">Paid</div>
-                            <div class="flight-detail-value">$${f.original_price.toFixed(2)}</div>
+                            <div class="flight-detail-label">Booked At</div>
+                            <div class="flight-detail-value">$${f.booked_price.toFixed(2)}</div>
                         </div>
                         <div>
                             <div class="flight-detail-label">Current</div>

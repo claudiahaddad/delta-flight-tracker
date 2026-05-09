@@ -31,6 +31,7 @@ class FlightResponse(BaseModel):
     return_date: str | None
     confirmation_number: str | None
     original_price: float
+    booked_price: float
     current_price: float
     lowest_price: float
     total_savings: float
